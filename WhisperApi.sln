@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperApi", "WhisperApi.csproj", "{44ACDA74-4F0A-4529-B4CF-1E87152041E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44ACDA74-4F0A-4529-B4CF-1E87152041E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44ACDA74-4F0A-4529-B4CF-1E87152041E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44ACDA74-4F0A-4529-B4CF-1E87152041E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44ACDA74-4F0A-4529-B4CF-1E87152041E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00C45CE8-212D-4FA4-B757-7BB7E7846CDC}
+	EndGlobalSection
+EndGlobal
