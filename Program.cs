@@ -42,7 +42,7 @@ app.MapGet("/weatherforecast", () =>
 
 app.MapPost("/audiotranscribe", async () =>
 {
-    openApiKey = "";
+    var openApiKey = "";
     var model = "whisper-1";
     // options for audio transcription
     var audioTranscriptionOptions = new AudioTranscriptionOptions
@@ -56,6 +56,24 @@ app.MapPost("/audiotranscribe", async () =>
     return response.Value.Text;
 })
 .WithName("AudioTranscribe")
+.WithOpenApi();
+
+app.MapPost("/audiotranslation", async () =>
+{
+    var openApiKey = "";
+    var model = "whisper-1";
+    // options for audio transcription
+    var audioTranscriptionOptions = new AudioTranslationOptions
+    {
+        ResponseFormat = AudioTranslationFormat.Srt,
+
+    };
+    var audioClient = new AudioClient(model, openApiKey);
+
+    var response = await audioClient.TranslateAudioAsync("audio.mp3", audioTranscriptionOptions);
+    return response.Value.Text;
+})
+.WithName("AudioTranslation")
 .WithOpenApi();
 
 app.Run();
