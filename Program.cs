@@ -30,6 +30,8 @@ app.MapPost("/audiotranscribe", async () =>
         ResponseFormat = AudioTranscriptionFormat.Srt,
 
     };
+
+
     var audioClient = new AudioClient(model, Constants.OPENAIAPIKEY);
 
     var response = await audioClient.TranscribeAudioAsync("audio.mp3", audioTranscriptionOptions);
