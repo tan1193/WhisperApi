@@ -9,11 +9,10 @@ This project is a .NET Web API designed to facilitate audio transcription and tr
 ## Setup Instructions
 1. Clone the repository
 2. Add Your OpenAI API Key
-. Open the `Constants.cs`
-. Replace the placeholder Constants.OPENAIAPIKEY with your actual OpenAI API key
+. Replace the placeholder OPENAIAPIKEY with your actual OpenAI API key
 ``` c#
 public static class Constants
 {
-    public const string OPENAIAPIKEY = "your-api-key-here";
+   var OPENAIAPIKEY = builder.Configuration["OPENAI_API_KEY"] ?? ""; // <--- change your key here
 }
 ```
