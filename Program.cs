@@ -3,12 +3,14 @@ using OpenAI.Audio;
 using System.ClientModel;
 using WhisperApi;
 
+
 var builder = WebApplication.CreateBuilder(args);
-var openApiKey = "";
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var OPENAIAPIKEY = builder.Configuration["OPENAI_API_KEY"] ?? ""; // <--- change your key here
 
 var app = builder.Build();
 
@@ -32,7 +34,7 @@ app.MapPost("/audiotranscribe", async () =>
     };
 
 
-    var audioClient = new AudioClient(model, Constants.OPENAIAPIKEY);
+    var audioClient = new AudioClient(model, OPENAIAPIKEY);
 
     var response = await audioClient.TranscribeAudioAsync("audio.mp3", audioTranscriptionOptions);
     return response.Value.Text;
@@ -49,7 +51,7 @@ app.MapPost("/audiotranslation", async () =>
         ResponseFormat = AudioTranslationFormat.Srt,
 
     };
-    var audioClient = new AudioClient(model, Constants.OPENAIAPIKEY);
+    var audioClient = new AudioClient(model, OPENAIAPIKEY);
 
     var response = await audioClient.TranslateAudioAsync("audio.mp3", audioTranscriptionOptions);
     return response.Value.Text;
