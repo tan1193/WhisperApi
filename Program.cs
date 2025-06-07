@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using OpenAI.Audio;
 using System.ClientModel;
 using WhisperApi;
@@ -23,38 +24,71 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/audiotranscribe", async () =>
+app.MapPost("/audiotranscribe", async (IFormFile file) =>
 {
-    var model = "whisper-1";
-    // options for audio transcription
-    var audioTranscriptionOptions = new AudioTranscriptionOptions
+    if (file == null || file.Length == 0)
     {
-        ResponseFormat = AudioTranscriptionFormat.Srt,
+        return Results.BadRequest("Audio file not provided or empty.");
+    }
 
-    };
+    try
+    {
+        var model = "whisper-1";
+        // options for audio transcription
+        var audioTranscriptionOptions = new AudioTranscriptionOptions
+        {
+            ResponseFormat = AudioTranscriptionFormat.Srt,
+        };
 
+        var audioClient = new AudioClient(model, OPENAIAPIKEY);
 
-    var audioClient = new AudioClient(model, OPENAIAPIKEY);
-
-    var response = await audioClient.TranscribeAudioAsync("audio.mp3", audioTranscriptionOptions);
-    return response.Value.Text;
+        using var stream = file.OpenReadStream();
+        var response = await audioClient.TranscribeAudioAsync(stream, file.FileName, audioTranscriptionOptions);
+        return Results.Ok(response.Value.Text);
+    }
+    catch (ArgumentNullException ex) // Should be caught by the initial check, but good for defense
+    {
+        return Results.BadRequest($"Argument null: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        // Log the exception ex here if logging is set up
+        return Results.Problem($"An error occurred during transcription: {ex.Message}");
+    }
 })
 .WithName("AudioTranscribe")
 .WithOpenApi();
 
-app.MapPost("/audiotranslation", async () =>
+app.MapPost("/audiotranslation", async (IFormFile file) =>
 {
-    var model = "whisper-1";
-    
-    var audioTranscriptionOptions = new AudioTranslationOptions
+    if (file == null || file.Length == 0)
     {
-        ResponseFormat = AudioTranslationFormat.Srt,
+        return Results.BadRequest("Audio file not provided or empty.");
+    }
 
-    };
-    var audioClient = new AudioClient(model, OPENAIAPIKEY);
+    try
+    {
+        var model = "whisper-1";
 
-    var response = await audioClient.TranslateAudioAsync("audio.mp3", audioTranscriptionOptions);
-    return response.Value.Text;
+        var audioTranslationOptions = new AudioTranslationOptions
+        {
+            ResponseFormat = AudioTranslationFormat.Srt,
+        };
+        var audioClient = new AudioClient(model, OPENAIAPIKEY);
+
+        using var stream = file.OpenReadStream();
+        var response = await audioClient.TranslateAudioAsync(stream, file.FileName, audioTranslationOptions);
+        return Results.Ok(response.Value.Text);
+    }
+    catch (ArgumentNullException ex) // Should be caught by the initial check, but good for defense
+    {
+        return Results.BadRequest($"Argument null: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        // Log the exception ex here if logging is set up
+        return Results.Problem($"An error occurred during translation: {ex.Message}");
+    }
 })
 .WithName("AudioTranslation")
 .WithOpenApi();
