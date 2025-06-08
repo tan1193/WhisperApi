@@ -1,9 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http;
 using OpenAI.Audio;
-using System.ClientModel;
-using WhisperApi;
-
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
